@@ -1,0 +1,70 @@
+
+QuestiON 1: Which countries have the most Invoices?
+
+SELECT BillingCountry, count(InvoiceId) as Invoices 
+FROM Invoice 
+GROUP BY BillingCountry
+ORDER BY Invoices DESC;
+
+
+
+QuestiON 2: Which city has the best customers?
+
+SELECT InvoiceId,BillingCity, sum(total) as amount 
+FROM Invoice
+GROUP BY BillingCity  
+ORDER BY  amount DESC;
+
+
+
+QuestiON 3: Who is the best customer?
+
+SELECT c.FirstName,  SUM(i.Total) AS Total_Amount
+FROM Customer c 
+JOIN Invoice i  ON c.CustomerId = i.CustomerId
+GROUP BY c.CustomerId
+ORDER BY Total_Amount DESC;
+
+
+QuestiON 1
+Use your query to return the email, first name, last name, and Genre of all Rock Music listeners. Return your list ordered alphabetically BY email address starting with A.
+
+SELECT distinct c.Email, c.FirstName , c.LastName, G.Name
+FROM Invoice  I JOIN Customer c
+ON I.CustomerId = c.CustomerId
+JOIN InvoiceLine IL
+ON I.InvoiceId = Il.InvoiceId
+JOIN Track T
+ON IL.TrackId =  T.TrackId
+JOIN Genre G
+ON T.GenreId = G.GenreId
+WHERE G.Name in ('Rock')
+order BY c.Email ASC;
+
+
+QuestiON 2: Who is writing the rock music?
+
+SELECT  A.ArtistId ArtistId, A.Name Name, count(A.name) songs
+FROM Genre G
+JOIN Track T
+ON T.GenreId = G.GenreId
+JOIN Album AL
+ON T.AlbumId = AL.AlbumId
+JOIN Artist A
+ON  Al.ArtistId = A.ArtistId
+WHERE G.Name = 'Rock' 
+GROUP BY A.Name
+ORDER BY songs DESC;
+
+
+QuestiON 3
+First, find which artist has earned the most according to the InvoiceLines?
+
+SELECT a.Name, (Count(a.name)*il.UnitPrice ) as Amount FROM 	Customer c
+JOIN Invoice i ON c.CustomerId = i.CustomerId
+JOIN InvoiceLine il ON i.InvoiceId = il.InvoiceId
+JOIN track t ON t.TrackId = il.TrackId
+JOIN Album al ON al.AlbumId = t.AlbumId
+JOIN Artist a ON a.ArtistId = al.ArtistId
+group BY a.Name
+ORDER BY Amount DESC;

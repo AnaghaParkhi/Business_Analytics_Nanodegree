@@ -1,0 +1,48 @@
+
+=============== Slide 1 Query ==============
+Top 10 customers 
+
+SELECT c.FirstName,  SUM(i.Total) AS Total_Amount
+FROM Customer c 
+JOIN Invoice i  ON c.CustomerId = i.CustomerId
+GROUP BY c.CustomerId
+ORDER BY Total_Amount DESC
+LIMIT 10;
+
+
+
+=============== Slide 2 Query ==============
+Who is writing a rock music?
+
+SELECT  A.ArtistId ArtistId, A.Name Name, count(A.name) songs
+FROM Genre G
+JOIN Track T
+ON T.GenreId = G.GenreId
+JOIN Album AL
+ON T.AlbumId = AL.AlbumId
+JOIN Artist A
+ON  Al.ArtistId = A.ArtistId
+WHERE G.Name = 'Rock' 
+GROUP BY A.Name
+ORDER BY songs DESC;
+
+=============== Slide 3 Query ==============
+
+Which country has most invoices?
+
+SELECT I.BillingCountry, count(InvoiceId) as Invoices 
+FROM Customer c 
+Join Invoice  I ON c.CustomerId = I.CustomerId
+GROUP BY BillingCountry
+ORDER BY Invoices DESC;	
+
+=============== Slide 4 Query ==============
+
+Popular Genre
+
+SELECT distinct  G.Name,COUNT(G.Name)AS GenreCount
+FROM  Track T
+JOIN Genre G
+ON T.GenreId = G.GenreId
+GROUP BY G.Name
+order BY GenreCount DESC;
